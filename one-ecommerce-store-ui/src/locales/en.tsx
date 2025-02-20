@@ -1,0 +1,32 @@
+const textContent = {
+  store_name: "My Store Name",
+  home: "Home",
+  shop: "Shop",
+  cart: "Cart",
+  amazing_product: "Amazing Product",
+  product_description: "Discover the features and benefits of our amazing product.",
+  shop_now: "Shop Now",
+  product_features: "Product Features",
+  innovative_design: "Innovative Design",
+  innovative_description: "Our product comes with a modern and ergonomic design for all your needs.",
+  long_battery: "Long Battery Life",
+  battery_description: "Enjoy up to 12 hours of usage on a single charge, ensuring maximum convenience.",
+  free_shipping: "Free Shipping",
+  shipping_description: "We offer free shipping on all orders, no matter where you are!",
+  customer_reviews: "What Our Customers Say",
+  customer_1: "This product changed my life! Highly recommend.",
+  customer_2: "Worth every penny. The quality is top-notch.",
+  customer_3: "I’ve never been more satisfied with a product!",
+  customer_services: "Customer Services",
+  privacy_policy: "Privacy Policy",
+  delivery_policy: "Delivery Policy",
+  exchange_policy: "Exchange & Return Policy",
+  terms_of_service: "Terms of Service",
+  faqs: "FAQs",
+  need_help: "Need Help",
+  whatsapp: "WhatsApp: 00000",
+  email: "Email: example@gmail.com",
+  copyright: "© 2025 Brand Name. All rights reserved."
+}
+
+export default textContent;
