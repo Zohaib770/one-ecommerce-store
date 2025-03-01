@@ -1,14 +1,58 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+import items from "./Products.tsx"
+import Header from './Header.tsx'
+import Footer from './Footer.tsx'
+import textContent from '../locales/en.tsx'
+
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+}
+
+export interface CartItem extends Product {
+  quantity: number;
+}
+
 
 const Shop = () => {
+
+  const addToCart = (item: Product) => {
+    const ItemWithQuantity: CartItem = { ...item, quantity: 1 };
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart.push(ItemWithQuantity);
+    localStorage.setItem('cart', JSON.stringify(cart));
+  };
+
   return (
-    <section className="py-16">
-      <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl font-semibold text-center text-gray-900">Shop</h2>
-        <p className="text-lg text-gray-700 mt-4">Welcome to the shop!</p>
-        {/* Hier kannst du deinen Shop-Content einfügen */}
-      </div>
-    </section>
+    <>
+      <Header />
+      <section className="bg-gray-100 py-4">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-semibold text-center text-gray-900">Shop</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mt-8">
+            {items.map((item) => (
+              <div key={item.id} className="border rounded-lg p-4 shadow-md">
+                <Link to={`/product-details/${item.id}`}>
+                  <img src={item.image} alt={item.name} className="w-full h-90 object-contain mb-4 rounded-md" />
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.name}</h3>
+                </Link>  
+                <p className="text-lg font-semibold text-gray-900">{item.price} €</p>
+                <button 
+                  onClick={() => addToCart(item)}
+                  className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                 {textContent.add_to_cart}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <Footer />
+    </>
   );
 };
 

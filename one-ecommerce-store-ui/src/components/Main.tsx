@@ -1,15 +1,21 @@
 import { Link } from 'react-router-dom';
 import headphone from "../assets/headphone1.png"
+import Header from './Header.tsx'
+import Footer from './Footer.tsx'
 
 const Main = () => (
     <>
+      <Header />
+    
       {/* hero section */}
       <section className="bg-gray-100 py-16" id="hero">
         <div className="max-w-6xl mx-auto px-4 flex items-center justify-between">
           <div className="w-1/2">
             <h1 className="text-4xl font-bold text-gray-900">Amazing Product</h1>
             <p className="text-lg text-gray-700 mt-4">Discover the features and benefits of our amazing product.</p>
-              <Link to="/shop" className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">shop Now</Link>
+            <button className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+              <Link to="/shop">shop Now</Link>
+            </button>
           </div>
           <div className="w-1/2">
             <img src={headphone} alt="Amazing Product" width={500} height={500} className="w-full rounded-lg shadow-lg" />
@@ -39,6 +45,8 @@ const Main = () => (
         </div>
       </div>
     </section>
+
+    <Footer />
   </>
 );
 
