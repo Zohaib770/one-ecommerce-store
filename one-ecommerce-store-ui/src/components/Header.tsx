@@ -1,9 +1,15 @@
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import textContent from "../locales/en";
+import { CartItem } from "./Interface"
 
-const Header = ({ cartItems }) => {
+interface CartItemProps {
+  cartItems: CartItem[];
+}
 
-  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+const Header: React.FC<CartItemProps> = ({ cartItems = [] }) => {
+
+  const totalItems = cartItems.reduce((total: number, item: CartItem) => total + item.quantity, 0);
   
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -23,9 +29,9 @@ const Header = ({ cartItems }) => {
         </nav>
         <div className="flex items-center space-x-2">
           <Link to="/cart" className={`hover:text-gray-400 ${isCartPage ? 'font-bold' : ''}`}>{textContent.header_cart}
-            {2 > 0 && (
+            {totalItems > 0 && (
               <span className="absolute top-2 right-1 bg-blue-500 text-white rounded-full px-2 text-xs">
-                  {2}
+                  {totalItems}
               </span>
           )}
           </Link>
