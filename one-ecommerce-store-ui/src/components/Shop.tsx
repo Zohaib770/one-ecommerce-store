@@ -5,17 +5,19 @@ import Header from './Header.tsx'
 import Footer from './Footer.tsx'
 import textContent from '../locales/en.tsx'
 import { Product, CartItem } from "./Interface.tsx"
-import StoredCartItems from "./StoredCartItems.tsx"
+import getStoredCartItems from "./StoredCartItems.tsx"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 const Shop = () => {
 
-  const [storedCartItems, setStoredCartItems] = useState<CartItem[]>(StoredCartItems());
+  const [storedCartItems, setStoredCartItems] = useState<CartItem[]>(getStoredCartItems);
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(storedCartItems));
+    if (storedCartItems.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(storedCartItems));
+    }
   }, [storedCartItems]);
 
   const addToCart = (item: Product) => {
@@ -46,7 +48,9 @@ const Shop = () => {
               <div key={item.id} className="border rounded-lg p-4 shadow-md">
                 <Link to={`/product-details/${item.id}`}>
                   <img src={item.image} alt={item.name} className="w-full h-90 object-contain mb-4 rounded-md" />
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.name}</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    {item.name.length > 20 ? item.name.slice(0, 50) + "..." : item.name}
+                  </h3>
                 </Link>  
                 <p className="text-lg font-semibold text-gray-900">{item.price} €</p>
                 <button 
