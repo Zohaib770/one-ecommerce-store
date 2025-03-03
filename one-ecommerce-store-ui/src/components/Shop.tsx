@@ -6,6 +6,8 @@ import Footer from './Footer.tsx'
 import textContent from '../locales/en.tsx'
 import { Product, CartItem } from "./Interface.tsx"
 import StoredCartItems from "./StoredCartItems.tsx"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Shop = () => {
@@ -28,11 +30,13 @@ const Shop = () => {
     }
 
     setStoredCartItems(cart);
+    toast.success(`${item.name} added to cart!` , {position: "top-center"});
   };
 
   return (
     <>
       <Header cartItems={storedCartItems} />
+      <ToastContainer autoClose={3000} />
       <section className="bg-gray-100 py-4">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-semibold text-center text-gray-900">Shop</h2>
