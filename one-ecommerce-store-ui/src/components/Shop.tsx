@@ -1,34 +1,38 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import items from "./Products.tsx"
 import Header from './Header.tsx'
 import Footer from './Footer.tsx'
 import textContent from '../locales/en.tsx'
-
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-}
-
-export interface CartItem extends Product {
-  quantity: number;
-}
+import { Product, CartItem } from "./Interface.tsx"
+import StoredCartItems from "./StoredCartItems.tsx"
 
 
 const Shop = () => {
 
+  const [storedCartItems, setStoredCartItems] = useState<CartItem[]>(StoredCartItems());
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(storedCartItems));
+  }, [storedCartItems]);
+
   const addToCart = (item: Product) => {
-    const ItemWithQuantity: CartItem = { ...item, quantity: 1 };
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    cart.push(ItemWithQuantity);
-    localStorage.setItem('cart', JSON.stringify(cart));
+    const cart = [...storedCartItems];
+    const existingItemIndex = cart.findIndex((cartItem) => cartItem.id === item.id);
+    
+    if (existingItemIndex !== -1) {
+      cart[existingItemIndex].quantity += 1;
+    } else {
+      const ItemWithQuantity: CartItem = { ...item, quantity: 1 };
+      cart.push(ItemWithQuantity);
+    }
+
+    setStoredCartItems(cart);
   };
 
   return (
     <>
-      <Header />
+      <Header cartItems={storedCartItems} />
       <section className="bg-gray-100 py-4">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-semibold text-center text-gray-900">Shop</h2>

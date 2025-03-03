@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import headphone from "../assets/headphone1.png"
 import Header from './Header.tsx'
 import Footer from './Footer.tsx'
+import StoredCartItems from './StoredCartItems.tsx';
 
 const Main = () => (
     <>
-      <Header />
+      <Header cartItems={StoredCartItems()} />
     
       {/* hero section */}
       <section className="bg-gray-100 py-16" id="hero">
