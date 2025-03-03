@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './Header';
 import Footer from './Footer';
-import StoredCartItems from './StoredCartItems'
+import getStoredCartItems from './StoredCartItems'
 
 const Checkout = () => {
     
@@ -24,7 +24,7 @@ const Checkout = () => {
 
     return (
         <>
-            <Header cartItems = {StoredCartItems()} />
+            <Header cartItems = {getStoredCartItems()} />
             <ToastContainer autoClose={3000} />
             <section className="py-16">
                 <div className="max-w-3xl mx-auto px-4">

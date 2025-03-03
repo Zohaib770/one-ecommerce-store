@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Header from './Header.tsx'
 import Footer from './Footer.tsx'
 import { CartItem } from './Interface.tsx'
-import StoredCartItems from "./StoredCartItems.tsx"
+import getStoredCartItems from "./StoredCartItems.tsx"
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -38,7 +38,7 @@ const Cart = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Header cartItems={StoredCartItems()} />
+            <Header cartItems={getStoredCartItems()} />
 
             <section className="py-16 flex-grow">
                 <div className="max-w-3xl mx-auto px-4">

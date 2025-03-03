@@ -9,13 +9,13 @@ import h2 from '../assets/1.jpeg';
 import h3 from '../assets/2.jpeg';
 import textContent from '../locales/en'
 import {Product, CartItem} from './Interface'
-import StoredCartItems from "./StoredCartItems.tsx"
+import getStoredCartItems from "./StoredCartItems.tsx"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetails = () => {
 
-    const [storedCartItems, setStoredCartItems] = useState<CartItem[]>(StoredCartItems());
+    const [storedCartItems, setStoredCartItems] = useState<CartItem[]>(getStoredCartItems);
     const { id } = useParams();
     const product = products.find((item) => item.id === parseInt(id as string))!;
     const images = [h1, h2, h3];

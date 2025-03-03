@@ -1,10 +1,8 @@
 import { CartItem } from "./Interface";
 
-const StoredCartItems = (): CartItem[] => {
-  
+const getStoredCartItems = (): CartItem[] => {
   const storedCartItems = localStorage.getItem("cart");
   return storedCartItems ? JSON.parse(storedCartItems) : [];
-
 };
 
-export default StoredCartItems;
+export default getStoredCartItems;
