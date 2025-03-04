@@ -47,7 +47,7 @@ const Shop = () => {
             {items.map((item) => (
               <div key={item.id} className="border rounded-lg p-4 shadow-md">
                 <Link to={`/product-details/${item.id}`}>
-                  <img src={item.image} alt={item.name} className="w-full h-90 object-contain mb-4 rounded-md" />
+                  <img src={item.image[0]} alt={item.name} className="w-full h-90 object-contain mb-4 rounded-md" />
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
                     {item.name.length > 20 ? item.name.slice(0, 50) + "..." : item.name}
                   </h3>

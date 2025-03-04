@@ -4,9 +4,6 @@ import products from "./Products";
 import Header from './Header';
 import Footer from './Footer';
 import ImageGallery from './ImageGallery';
-import h1 from '../assets/headphone1.png';
-import h2 from '../assets/1.jpeg';
-import h3 from '../assets/2.jpeg';
 import textContent from '../locales/en'
 import {Product, CartItem} from './Interface'
 import getStoredCartItems from "./StoredCartItems.tsx"
@@ -18,7 +15,6 @@ const ProductDetails = () => {
     const [storedCartItems, setStoredCartItems] = useState<CartItem[]>(getStoredCartItems);
     const { id } = useParams();
     const product = products.find((item) => item.id === parseInt(id as string))!;
-    const images = [h1, h2, h3];
     const [quantity, setQuantity] = useState(1);
     
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +57,7 @@ const ProductDetails = () => {
 
             <div className="bg-gray-100 flex flex-col md:flex-row p-4">
                 <div className="md:w-1/2 mb-4 md:mb-0">
-                    <ImageGallery images={images} />
+                    <ImageGallery images={product.image} />
                 </div>
 
                 <div className="md:w-1/2 p-10 mt-15">
