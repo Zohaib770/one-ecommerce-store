@@ -17,7 +17,7 @@ import p32 from "../assets/product3/p3-2.jpg";
 import p33 from "../assets/product3/p3-3.jpg";
 import p34 from "../assets/product3/p3-4.jpg";
 
-const items = [
+const ProductList = [
   {
     id: 1,
     name: "Elegante Lederhandtasche – Modell 'Sophia'",
@@ -48,4 +48,4 @@ const items = [
   },
 ];
 
-export default items;
+export default ProductList;
