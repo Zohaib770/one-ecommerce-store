@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import textContent from "../locales/en";
+import textContent from "../../locales/en";
 
 const Footer = () => (
     <footer className="bg-gray-900 text-white py-6">

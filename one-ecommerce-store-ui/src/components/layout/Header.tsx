@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import textContent from "../locales/en";
-import { CartItem } from "./Interface"
+import textContent from "../../locales/en";
+import { CartItem } from "../Interface"
 
 interface CartItemProps {
   cartItems: CartItem[];
