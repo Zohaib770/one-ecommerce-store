@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Header from './Header';
-import Footer from './Footer';
-import getStoredCartItems from './StoredCartItems'
+import Header from './layout/Header';
+import Footer from './layout/Footer';
+import {getStoredCartItems, getCartItems} from './CartUtils'
 
 const Checkout = () => {
     
@@ -24,7 +24,7 @@ const Checkout = () => {
 
     return (
         <>
-            <Header cartItems = {getStoredCartItems()} />
+            <Header cartItems = {getCartItems(getStoredCartItems())} />
             <ToastContainer autoClose={3000} />
             <section className="py-16">
                 <div className="max-w-3xl mx-auto px-4">

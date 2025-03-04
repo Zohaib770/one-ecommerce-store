@@ -1,29 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
-import Header from './Header.tsx'
-import Footer from './Footer.tsx'
-import { CartItem } from './Interface.tsx'
-import getStoredCartItems from "./StoredCartItems.tsx"
+import Header from './layout/Header.tsx'
+import Footer from './layout/Footer.tsx'
+import { CartItem, StoredCartItem } from './Interface.tsx'
+import {getCartItems, getStoredCartItems} from "./CartUtils.tsx"
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
     useEffect(() => {
-        const storedCart = JSON.parse(localStorage.getItem('cart') || '[]');
-        setCartItems(storedCart);
+        setCartItems(getCartItems(getStoredCartItems()));
     }, []);
 
     const updateCart = (updatedCartItem: CartItem[]) => {
         setCartItems(updatedCartItem);
-        localStorage.setItem('cart', JSON.stringify(updatedCartItem));
+        localStorage.setItem('cart', JSON.stringify(updatedCartItem.map(({ id, quantity }) => ({ id, quantity }))));
     };
 
     const updateQuantity = (id: number, newQuantity: number) => {
         if (newQuantity < 1) return;
-        const updatedCart = cartItems.map((item) =>
-            item.id === id
-                ? { ...item, quantity: newQuantity, price: (item.price / item.quantity) * newQuantity }
-                : item
+        const updatedCart = cartItems.map(item => 
+            item.id === id ? { ...item, quantity: newQuantity } : item
         );
         updateCart(updatedCart);
     };
@@ -38,7 +35,7 @@ const Cart = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Header cartItems={getStoredCartItems()} />
+            <Header cartItems={cartItems} />
 
             <section className="py-16 flex-grow">
                 <div className="max-w-3xl mx-auto px-4">

@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import items from "./Products.tsx"
-import Header from './Header.tsx'
-import Footer from './Footer.tsx'
+import items from "./ProductList.tsx"
+import Header from './layout/Header.tsx'
+import Footer from './layout/Footer.tsx'
 import textContent from '../locales/en.tsx'
-import { Product, CartItem } from "./Interface.tsx"
-import getStoredCartItems from "./StoredCartItems.tsx"
+import { Product, CartItem, StoredCartItem } from "./Interface.tsx"
+import { getStoredCartItems, getCartItems } from "./CartUtils.tsx"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 const Shop = () => {
 
-  const [storedCartItems, setStoredCartItems] = useState<CartItem[]>(getStoredCartItems);
+  const [storedCartItems, setStoredCartItems] = useState<StoredCartItem[]>(getStoredCartItems);
+  const [CartItems, setCartItems] = useState<CartItem[]>(getCartItems(storedCartItems));
 
   useEffect(() => {
+
+    setCartItems(getCartItems(storedCartItems));
     if (storedCartItems.length > 0) {
       localStorage.setItem("cart", JSON.stringify(storedCartItems));
     }
@@ -27,8 +30,7 @@ const Shop = () => {
     if (existingItemIndex !== -1) {
       cart[existingItemIndex].quantity += 1;
     } else {
-      const ItemWithQuantity: CartItem = { ...item, quantity: 1 };
-      cart.push(ItemWithQuantity);
+      cart.push({ id: item.id, quantity: 1 });
     }
 
     setStoredCartItems(cart);
@@ -37,7 +39,7 @@ const Shop = () => {
 
   return (
     <>
-      <Header cartItems={storedCartItems} />
+      <Header cartItems={CartItems} />
       <ToastContainer autoClose={3000} />
       <section className="bg-gray-100 py-4">
         <div className="max-w-6xl mx-auto px-4">

@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import products from "./Products";
-import Header from './Header';
-import Footer from './Footer';
+import products from "./ProductList.tsx";
+import Header from './layout/Header.tsx';
+import Footer from './layout/Footer.tsx';
 import ImageGallery from './ImageGallery';
 import textContent from '../locales/en'
-import {Product, CartItem} from './Interface'
-import getStoredCartItems from "./StoredCartItems.tsx"
+import {Product, StoredCartItem} from './Interface'
+import {getStoredCartItems, getCartItems} from "./CartUtils.tsx"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetails = () => {
 
-    const [storedCartItems, setStoredCartItems] = useState<CartItem[]>(getStoredCartItems);
+    const [storedCartItems, setStoredCartItems] = useState<StoredCartItem[]>(getStoredCartItems());
     const { id } = useParams();
     const product = products.find((item) => item.id === parseInt(id as string))!;
     const [quantity, setQuantity] = useState(1);
@@ -38,8 +38,7 @@ const ProductDetails = () => {
         if (existingItemIndex !== -1) {
           cart[existingItemIndex].quantity += quantity;
         } else {
-          const ItemWithQuantity: CartItem = { ...item, quantity: quantity };
-          cart.push(ItemWithQuantity);
+          cart.push({ id: item.id, quantity: quantity });
         }
     
         setStoredCartItems(cart);
@@ -52,7 +51,7 @@ const ProductDetails = () => {
 
     return (
         <>
-            <Header cartItems={storedCartItems} />
+            <Header cartItems={getCartItems(storedCartItems)} />
             <ToastContainer autoClose={3000} />
 
             <div className="bg-gray-100 flex flex-col md:flex-row p-4">
