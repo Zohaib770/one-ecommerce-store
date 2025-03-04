@@ -53,7 +53,7 @@ const Cart = () => {
                                     <div key={item.id} className="flex flex-col border p-4 rounded-md">
                                         <div className="flex items-center">
                                             <img
-                                                src={item.image}
+                                                src={item.image[0]}
                                                 alt={item.name}
                                                 className="w-20 h-20 object-contain rounded-md mr-4"
                                             />

@@ -43,7 +43,7 @@ const Shop = () => {
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-semibold text-center text-gray-900">Shop</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mt-5">
             {items.map((item) => (
               <div key={item.id} className="border rounded-lg p-4 shadow-md">
                 <Link to={`/product-details/${item.id}`}>
