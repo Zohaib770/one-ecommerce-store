@@ -52,7 +52,7 @@ const ProductDetails = () => {
     return (
         <>
             <Header cartItems={getCartItems(storedCartItems)} />
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={300} />
 
             <div className="bg-gray-100 flex flex-col md:flex-row p-4">
                 <div className="md:w-1/2 mb-4 md:mb-0">

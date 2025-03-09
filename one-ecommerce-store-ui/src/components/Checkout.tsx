@@ -25,7 +25,7 @@ const Checkout = () => {
     return (
         <>
             <Header cartItems = {getCartItems(getStoredCartItems())} />
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={300} />
             <section className="py-16">
                 <div className="max-w-3xl mx-auto px-4">
                     <h2 className="text-3xl font-semibold text-center text-gray-900 mb-8">Checkout</h2>

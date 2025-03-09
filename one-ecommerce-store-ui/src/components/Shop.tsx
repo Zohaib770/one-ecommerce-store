@@ -40,7 +40,7 @@ const Shop = () => {
   return (
     <>
       <Header cartItems={CartItems} />
-      <ToastContainer autoClose={3000} />
+      <ToastContainer autoClose={300} />
       <section className="bg-gray-100 py-4">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-semibold text-center text-gray-900">Shop</h2>
