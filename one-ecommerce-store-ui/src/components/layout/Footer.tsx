@@ -5,18 +5,27 @@ const Footer = () => (
     <footer className="bg-gray-900 text-white py-6">
       <div className="max-w-6xl mx-auto px-4 text-center">
         <div className="flex justify-around">
-          <div className="flex flex-col mt-4 space-x-4">
+          <div className="flex flex-col mt-4">
             <p className="mb-4">{textContent.store_name}</p>
             <Link to="/" className="hover:text-gray-400">{textContent.home}</Link>
             <Link to="" className="hover:text-gray-400">{textContent.footer_about}</Link>
           </div>
           <div className="flex flex-col mt-4 space-x-4">
             <p className="mb-4">{textContent.footer_customer_services}</p>
-            <a href="#" className="hover:text-gray-400">{textContent.footer_privacy_policy}</a>
-            <a href="#" className="hover:text-gray-400">{textContent.footer_delivery_policy}</a>
+            <Link to="/legal/privacy-policy" className="hover:text-gray-400">
+              {textContent.footer_privacy_policy}
+            </Link>
+            <Link to="/legal/delivery-policy" className="hover:text-gray-400">
+              {textContent.footer_delivery_policy}
+            </Link>            
             <a href="#" className="hover:text-gray-400">{textContent.footer_exchange_policy}</a>
-            <a href="#" className="hover:text-gray-400">{textContent.footer_terms_of_service}</a>
-            <a href="#" className="hover:text-gray-400">{textContent.footer_faqs}</a>
+            
+            <Link to="/legal/terms-of-service" className="hover:text-gray-400">
+              {textContent.footer_terms_of_service}
+            </Link>
+            <Link to="/legal/faqs" className="hover:text-gray-400">
+              {textContent.footer_faqs}
+            </Link>          
           </div>
           <div className="flex flex-col mt-4 space-x-4">
             <p className="mb-4">{textContent.footer_need_help}</p>
