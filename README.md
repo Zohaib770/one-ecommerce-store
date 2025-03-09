@@ -2,6 +2,16 @@
 
 This project is a minimal eCommerce store built with **React** for the frontend and a lightweight backend for managing addresses and payment status.  
 
+## Still in development
+## Todo
+
+- **frontend**
+    - rmv Exchange & return  Policy
+    - implementation for various payment methods
+
+- **backend** 
+    - rating/review
+
 ## 📂 Project Structure  
 
 - **Product Images:**  
@@ -26,12 +36,3 @@ This project is a minimal eCommerce store built with **React** for the frontend 
 
 ### 1️⃣ Install Dependencies  
 
-
-## Todo
-
-- **frontend**
-    - rmv Exchange & return  Policy
-    - implementation for various payment methods
-
-- **backend** 
-    - rating/review
