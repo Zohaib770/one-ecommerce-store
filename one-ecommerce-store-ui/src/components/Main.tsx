@@ -19,7 +19,7 @@ const Main = () => (
             </button>
           </div>
           <div className="w-1/2">
-            <img src={headphone} alt="Amazing Product" width={500} height={500} className="w-full rounded-lg shadow-lg" />
+            <img src={headphone} alt="Amazing Product" width={500} height={500} className="w-full object-contain rounded-lg shadow-lg" />
           </div>
         </div>
     </section>

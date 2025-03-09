@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const ImageGallery: React.FC<{ images: string[] }> = ({ images }) => { // Corrected type here
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
-  const thumbnailsPerPage = 3;
+  const thumbnailsPerPage = 2;
 
   const handlePrevThumbnails = () => {
     setThumbnailStartIndex(Math.max(0, thumbnailStartIndex - thumbnailsPerPage));

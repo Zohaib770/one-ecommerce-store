@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Header from './layout/Header.tsx'
 import Footer from './layout/Footer.tsx'
-import { CartItem, StoredCartItem } from './Interface.tsx'
+import { CartItem } from './Interface.tsx'
 import {getCartItems, getStoredCartItems} from "./CartUtils.tsx"
 
 const Cart = () => {
