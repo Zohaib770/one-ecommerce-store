@@ -11,6 +11,7 @@ router.get('/', (req, res) => {
 
 //user 
 router.post('/register', userController.userRegister);
+router.post('/login', userController.userLogin);
 
 // products
 router.get('/fetch-all-products', productController.getAllProducts);
