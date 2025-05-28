@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Header from './layout/Header';
-import Footer from './layout/Footer';
+import Header from '../pages/layout/Header';
+import Footer from '../pages/layout/Footer';
 import {getStoredCartItems, getCartItems} from './CartUtils'
+import { Link } from 'react-router-dom';
 
 const Checkout = () => {
     
@@ -135,6 +136,9 @@ const Checkout = () => {
                         >
                             {paymentMethod === 'paypal' ? 'Pay with PayPal' : 'Complete Checkout'}
                         </button>
+
+                        <Link to="/payment">Payments</Link>
+
                     </form>
                 </div>
             </section>

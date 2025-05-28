@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import products from "./ProductList.tsx";
-import Header from './layout/Header.tsx';
-import Footer from './layout/Footer.tsx';
+import Header from '../pages/layout/Header.tsx';
+import Footer from '../pages/layout/Footer.tsx';
 import ImageGallery from './ImageGallery';
 import textContent from '../locales/en'
 import {Product, StoredCartItem} from './Interface'

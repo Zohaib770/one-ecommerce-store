@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
-import { getStoredCartItems, getCartItems } from '../CartUtils.tsx';
+import { getStoredCartItems, getCartItems } from '../../components/CartUtils';
 
 const Legal = () => {
     return (

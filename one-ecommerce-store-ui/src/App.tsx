@@ -4,12 +4,13 @@ import Shop from './components/Shop.tsx'
 import ProductDetails from './components/ProductDetails.tsx'
 import Cart from './components/Cart.tsx'
 import Checkout from './components/Checkout.tsx'
+import Payment from './components/Payment.tsx'
 
-import Legal from './components/footer-pages/Legal.tsx'
-import PrivacyPolicy from './components/footer-pages/PrivacyPolicy.tsx'
-import DeliveryPolicy from './components/footer-pages/DeliveryPolicy.tsx'
-import TermsOfService from './components/footer-pages/TermsOfService.tsx'
-import Faqs from './components/footer-pages/Faqs.tsx'
+import Legal from './pages/footer-pages/Legal.tsx'
+import PrivacyPolicy from './pages/footer-pages/PrivacyPolicy.tsx'
+import DeliveryPolicy from './pages/footer-pages/DeliveryPolicy.tsx'
+import TermsOfService from './pages/footer-pages/TermsOfService.tsx'
+import Faqs from './pages/footer-pages/Faqs.tsx'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/shop" element={<Shop />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="payment" element={<Payment />} />        
         <Route path="/product-details/:id" element={<ProductDetails />} />
         
         <Route path="/legal" element={<Legal />}>
