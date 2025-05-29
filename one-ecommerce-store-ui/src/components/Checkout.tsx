@@ -15,7 +15,7 @@ const Checkout = () => {
     
     const onSubmit = async (data: any) => {
         try {
-            await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/api/shipping-address`, data);
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/shipping-address`, data);
             toast.success('Checkout erfolgreich!', { position: "top-center", autoClose: 2000 });
             
         } catch (error) {

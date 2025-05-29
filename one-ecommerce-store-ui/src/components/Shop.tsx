@@ -4,7 +4,7 @@ import items from "./ProductList.tsx"
 import Header from '../pages/layout/Header.tsx'
 import Footer from '../pages/layout/Footer.tsx'
 import textContent from '../locales/en.tsx'
-import { Product, CartItem, StoredCartItem } from "./Interface.tsx"
+import { Product, CartItem, StoredCartItem } from "../types/Interface.tsx"
 import { getStoredCartItems, getCartItems } from "./CartUtils.tsx"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

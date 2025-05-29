@@ -1,4 +1,4 @@
-import { StoredCartItem, CartItem } from "./Interface";
+import { StoredCartItem, CartItem } from "../types/Interface";
 import ProductList from "./ProductList";
 
 export const getStoredCartItems = (): StoredCartItem[] => {
