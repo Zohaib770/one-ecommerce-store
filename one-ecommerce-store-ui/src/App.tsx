@@ -12,6 +12,7 @@ import DeliveryPolicy from './pages/footer-pages/DeliveryPolicy.tsx'
 import TermsOfService from './pages/footer-pages/TermsOfService.tsx'
 import Faqs from './pages/footer-pages/Faqs.tsx'
 
+import ProtectedRoute from './components/ProtectedRoute';
 import Admin from './pages/admin/Admin'
 import Login from './pages/admin/login'
 
@@ -39,7 +40,12 @@ function App() {
         </Route>
 
         <Route path="login" element={<Login />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin"
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>}
+        />
 
       </Routes>
     </>
