@@ -12,7 +12,7 @@ import DeliveryPolicy from './pages/footer-pages/DeliveryPolicy.tsx'
 import TermsOfService from './pages/footer-pages/TermsOfService.tsx'
 import Faqs from './pages/footer-pages/Faqs.tsx'
 
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute.tsx';
 import Admin from './pages/admin/Admin'
 import Login from './pages/admin/login'
 
