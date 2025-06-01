@@ -83,6 +83,7 @@ const ProductManagement = () => {
         await fetchProducts();
         setUpdateForm(false);
         setShowForm(false);
+        resetCurrentProduct();
     }
 
     const handleDeleteProductImages = async (id: string) => {
@@ -285,141 +286,142 @@ const ProductManagement = () => {
                 </div >
             )}
 
+            {products.length > 0 &&
+                <div>
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-lg font-medium">Product List</h3>
+                        <span className="text-sm text-gray-500">{products.length} products</span>
+                    </div>
 
-            <div>
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-medium">Product List</h3>
-                    <span className="text-sm text-gray-500">{products.length} products</span>
-                </div>
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Images</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {products.map((product) => {
+                                    const currentIndex = currentImageIndex[product._id] || 0;
+                                    const hasMultipleImages = product.imageUrl.length > 1;
 
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Images</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {products.map((product) => {
-                                const currentIndex = currentImageIndex[product._id] || 0;
-                                const hasMultipleImages = product.imageUrl.length > 1;
-
-                                return (
-                                    <tr key={product._id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4">
-                                            <div className="relative flex items-center justify-center">
-                                                {product.imageUrl.length > 0 ? (
-                                                    <div className="relative flex items-center justify-center group">
-                                                        <img
-                                                            src={`${BACKEND_URL}${product.imageUrl[currentIndex]}`}
-                                                            alt={product.name}
-                                                            className="h-16 w-16 rounded-md object-cover border border-gray-200"
-                                                        />
-
-                                                        {hasMultipleImages && (
-                                                            <>
-                                                                {/* Left Arrow */}
-                                                                <button
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation();
-                                                                        handlePrevImage(product._id);
-                                                                    }}
-                                                                    className="absolute left-0 z-10 p-1 bg-white/80 rounded-full text-gray-800 hover:bg-white transition-all opacity-0 group-hover:opacity-100 shadow-md transform -translate-x-1/2"
-                                                                >
-                                                                    <svg
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        className="h-5 w-5"
-                                                                        viewBox="0 0 20 20"
-                                                                        fill="currentColor"
-                                                                    >
-                                                                        <path
-                                                                            fillRule="evenodd"
-                                                                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                                                            clipRule="evenodd"
-                                                                        />
-                                                                    </svg>
-                                                                </button>
-
-                                                                {/* Right Arrow */}
-                                                                <button
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation();
-                                                                        handleNextImage(product._id);
-                                                                    }}
-                                                                    className="absolute right-0 z-10 p-1 bg-white/80 rounded-full text-gray-800 hover:bg-white transition-all opacity-0 group-hover:opacity-100 shadow-md transform translate-x-1/2"
-                                                                >
-                                                                    <svg
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        className="h-5 w-5"
-                                                                        viewBox="0 0 20 20"
-                                                                        fill="currentColor"
-                                                                    >
-                                                                        <path
-                                                                            fillRule="evenodd"
-                                                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                                            clipRule="evenodd"
-                                                                        />
-                                                                    </svg>
-                                                                </button>
-
-                                                                {/* Image Counter */}
-                                                                <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 bg-black/70 text-white text-xs px-2 py-0.5 rounded-full">
-                                                                    {currentIndex + 1}/{product.imageUrl.length}
-                                                                </div>
-                                                            </>
-                                                        )}
-                                                    </div>
-                                                ) : (
-                                                    <div className="h-16 w-16 rounded-md bg-gray-100 flex items-center justify-center">
-                                                        <svg
-                                                            className="h-6 w-6 text-gray-400"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            viewBox="0 0 24 24"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                            <path
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                                strokeWidth={2}
-                                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    return (
+                                        <tr key={product._id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4">
+                                                <div className="relative flex items-center justify-center">
+                                                    {product.imageUrl.length > 0 ? (
+                                                        <div className="relative flex items-center justify-center group">
+                                                            <img
+                                                                src={`${BACKEND_URL}${product.imageUrl[currentIndex]}`}
+                                                                alt={product.name}
+                                                                className="h-16 w-16 rounded-md object-cover border border-gray-200"
                                                             />
-                                                        </svg>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                                            <div className="text-sm text-gray-500 line-clamp-2 max-w-xs">{product.description}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {formatPrice(product.price)} €
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <div className="flex space-x-2">
-                                                <button
-                                                    onClick={() => showEditProductForm(product)}
-                                                    className="text-blue-600 hover:text-blue-800 px-2 py-1 rounded hover:bg-blue-50 transition-colors">
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDeleteProduct(product._id)}
-                                                    className="text-red-600 hover:text-red-800 px-2 py-1 rounded hover:bg-red-50 transition-colors">
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+
+                                                            {hasMultipleImages && (
+                                                                <>
+                                                                    {/* Left Arrow */}
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            handlePrevImage(product._id);
+                                                                        }}
+                                                                        className="absolute left-0 z-10 p-1 bg-white/80 rounded-full text-gray-800 hover:bg-white transition-all opacity-0 group-hover:opacity-100 shadow-md transform -translate-x-1/2"
+                                                                    >
+                                                                        <svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            className="h-5 w-5"
+                                                                            viewBox="0 0 20 20"
+                                                                            fill="currentColor"
+                                                                        >
+                                                                            <path
+                                                                                fillRule="evenodd"
+                                                                                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                                                                clipRule="evenodd"
+                                                                            />
+                                                                        </svg>
+                                                                    </button>
+
+                                                                    {/* Right Arrow */}
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            handleNextImage(product._id);
+                                                                        }}
+                                                                        className="absolute right-0 z-10 p-1 bg-white/80 rounded-full text-gray-800 hover:bg-white transition-all opacity-0 group-hover:opacity-100 shadow-md transform translate-x-1/2"
+                                                                    >
+                                                                        <svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            className="h-5 w-5"
+                                                                            viewBox="0 0 20 20"
+                                                                            fill="currentColor"
+                                                                        >
+                                                                            <path
+                                                                                fillRule="evenodd"
+                                                                                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                                                clipRule="evenodd"
+                                                                            />
+                                                                        </svg>
+                                                                    </button>
+
+                                                                    {/* Image Counter */}
+                                                                    <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 bg-black/70 text-white text-xs px-2 py-0.5 rounded-full">
+                                                                        {currentIndex + 1}/{product.imageUrl.length}
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <div className="h-16 w-16 rounded-md bg-gray-100 flex items-center justify-center">
+                                                            <svg
+                                                                className="h-6 w-6 text-gray-400"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                viewBox="0 0 24 24"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    strokeWidth={2}
+                                                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                                                />
+                                                            </svg>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                                                <div className="text-sm text-gray-500 line-clamp-2 max-w-xs">{product.description}</div>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                {formatPrice(product.price)} €
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <div className="flex space-x-2">
+                                                    <button
+                                                        onClick={() => showEditProductForm(product)}
+                                                        className="text-blue-600 hover:text-blue-800 px-2 py-1 rounded hover:bg-blue-50 transition-colors">
+                                                        Edit
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDeleteProduct(product._id)}
+                                                        className="text-red-600 hover:text-red-800 px-2 py-1 rounded hover:bg-red-50 transition-colors">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            }
         </div >
     );
 };
