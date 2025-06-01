@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const routes = require('./route/api');
 const connectDB = require('./config/db.js')
@@ -17,6 +18,7 @@ connectDB(MONGODB_URI);
 
 // Routes
 app.use('/', routes);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Server starts
 app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
