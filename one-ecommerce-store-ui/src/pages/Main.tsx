@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import headphone from "../assets/headphone1.png"
-import Header from '../pages/layout/Header.tsx'
-import Footer from '../pages/layout/Footer.tsx'
-import { getStoredCartItems, getCartItems } from './CartUtils.tsx';
+import Header from './layout/Header.tsx'
+import Footer from './layout/Footer.tsx'
+import { getStoredCartItems, getCartItems } from '../components/CartUtils.tsx';
 
 const Main = () => (
     <>
