@@ -84,9 +84,11 @@ const Cart = () => {
                                     <span className="font-semibold">Total:</span>
                                     <span className="font-semibold">{finalTotal.toFixed(2)} €</span>
                                 </div>
-                                <button className="w-full mt-6 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
-                                    <Link to="/checkout">Checkout</Link>
-                                </button>
+                                <Link to="/checkout">
+                                    <button className="w-full mt-6 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
+                                        Checkout
+                                    </button>
+                                </Link>
                             </div>
                         </>
                     )}

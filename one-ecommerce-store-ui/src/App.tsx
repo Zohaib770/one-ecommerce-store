@@ -3,7 +3,7 @@ import Main from './pages/Main.tsx'
 import Shop from './pages/Shop.tsx'
 import ProductDetails from './pages/ProductDetails.tsx'
 import Cart from './components/Cart.tsx'
-import Checkout from './components/Checkout.tsx'
+import Checkout from './pages/Checkout.tsx'
 import Payment from './components/Payment.tsx'
 
 import Legal from './pages/footer-pages/Legal.tsx'

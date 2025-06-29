@@ -3,21 +3,22 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Header from '../pages/layout/Header';
-import Footer from '../pages/layout/Footer';
-import {getStoredCartItems, getCartItems} from './CartUtils'
+import Header from './layout/Header';
+import Footer from './layout/Footer';
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext.tsx';
 
 const Checkout = () => {
-    
+
+    const { cartItems } = useCart();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [paymentMethod, setPaymentMethod] = useState<'paypal' | 'card'>('paypal');
-    
+
     const onSubmit = async (data: any) => {
         try {
             await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/shipping-address`, data);
             toast.success('Checkout erfolgreich!', { position: "top-center", autoClose: 2000 });
-            
+
         } catch (error) {
             toast.error('Fehler beim Checkout!', { position: "top-center" });
         }
@@ -25,15 +26,15 @@ const Checkout = () => {
 
     return (
         <>
-            <Header cartItems = {getCartItems(getStoredCartItems())} />
+            <Header cartItems={cartItems} />
             <ToastContainer autoClose={300} />
-            <section className="py-16">
+            <section className="py-16 pt-20">
                 <div className="max-w-3xl mx-auto px-4">
                     <h2 className="text-3xl font-semibold text-center text-gray-900 mb-8">Checkout</h2>
 
                     {/* Checkout-Formular */}
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        
+
                         {/* Versandadresse */}
                         <div className="mb-8">
                             <h3 className="text-xl font-semibold mb-4">Shipping Address</h3>
@@ -44,28 +45,28 @@ const Checkout = () => {
                                     className="w-full p-2 border rounded-md"
                                 />
                                 {errors.name && <p className="text-red-500">{String(errors.name.message)}</p>}
-                                
+
                                 <input
                                     {...register("address", { required: "Adresse ist erforderlich" })}
                                     placeholder="Address"
                                     className="w-full p-2 border rounded-md"
                                 />
                                 {errors.address && <p className="text-red-500">{String(errors.address.message)}</p>}
-                                
+
                                 <input
                                     {...register("city", { required: "Stadt ist erforderlich" })}
                                     placeholder="City"
                                     className="w-full p-2 border rounded-md"
                                 />
                                 {errors.city && <p className="text-red-500">{String(errors.city.message)}</p>}
-                                
+
                                 <input
                                     {...register("zip", { required: "PLZ ist erforderlich" })}
                                     placeholder="ZIP Code"
                                     className="w-full p-2 border rounded-md"
                                 />
                                 {errors.zip && <p className="text-red-500">{String(errors.zip.message)}</p>}
-                                
+
                                 <input
                                     {...register("country", { required: "Land ist erforderlich" })}
                                     placeholder="Country"
@@ -111,14 +112,14 @@ const Checkout = () => {
                                         className="w-full p-2 border rounded-md"
                                     />
                                     {errors.cardNumber && <p className="text-red-500">{String(errors.cardNumber.message)}</p>}
-                                    
+
                                     <input
                                         {...register("expiry", { required: "Ablaufdatum ist erforderlich" })}
                                         placeholder="Expiry (MM/YY)"
                                         className="w-full p-2 border rounded-md"
                                     />
                                     {errors.expiry && <p className="text-red-500">{String(errors.expiry.message)}</p>}
-                                    
+
                                     <input
                                         {...register("cvv", { required: "CVV ist erforderlich" })}
                                         placeholder="CVV"

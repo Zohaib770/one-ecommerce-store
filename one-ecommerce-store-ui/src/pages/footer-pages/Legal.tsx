@@ -1,13 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import Header from '../layout/Header';
 import Footer from '../layout/Footer';
-import { getStoredCartItems, getCartItems } from '../../components/CartUtils';
+import { useCart } from '../../context/CartContext';
 
 const Legal = () => {
+
+    const { cartItems } = useCart();
+
     return (
         <div className='min-h-screen flex flex-col'>
-            <Header cartItems={getCartItems(getStoredCartItems())} />
-            <div className='flex-1 bg-gray-100'>
+            <Header cartItems={cartItems} />
+            <div className='flex-1 bg-gray-100 pt-20'>
                 <Outlet />
             </div>
             <Footer />
