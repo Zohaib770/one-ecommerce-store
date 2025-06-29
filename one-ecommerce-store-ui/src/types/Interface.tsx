@@ -9,13 +9,12 @@ export interface Product {
 }
 
 export interface CartItem {
-  _id: string;
   product: Product;
   quantity: number;
 }
 
 export interface StoredCartItem {
-  id: string; // Product ID
+  _id: string;
   quantity: number;
 }
 
@@ -24,7 +23,7 @@ export interface Payment {
   method: string; // e.g. "paypal", "credit card"
   status: string; // e.g. "paid", "pending", "refunded"
   transactionId: string;
-  date: string; // ISO string
+  date: string;
 }
 
 export interface PersonalDetail {

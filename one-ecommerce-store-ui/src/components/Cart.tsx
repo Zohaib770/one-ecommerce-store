@@ -1,35 +1,22 @@
-import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Header from '../pages/layout/Header.tsx'
 import Footer from '../pages/layout/Footer.tsx'
-import { CartItem } from '../types/Interface.tsx'
-import {getCartItems, getStoredCartItems} from "./CartUtils.tsx"
+import { useCart } from '../context/CartContext.tsx';
 
 const Cart = () => {
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const { cartItems, updateCartItemQuantityToLocalStorage, removeCartItemFromLocalStorage } = useCart();
 
-    useEffect(() => {
-        setCartItems(getCartItems(getStoredCartItems()));
-    }, []);
-
-    const updateCart = (updatedCartItem: CartItem[]) => {
-        setCartItems(updatedCartItem);
-        localStorage.setItem('cart', JSON.stringify(updatedCartItem.map(({ id, quantity }) => ({ id, quantity }))));
-    };
-
-    const updateQuantity = (id: number, newQuantity: number) => {
+    const updateQuantity = (_id: string, newQuantity: number) => {
         if (newQuantity < 1) return;
-        const updatedCart = cartItems.map(item => 
-            item.id === id ? { ...item, quantity: newQuantity } : item
-        );
-        updateCart(updatedCart);
+        updateCartItemQuantityToLocalStorage(_id, newQuantity);
     };
 
-    const removeItem = (id: number) => {
-        updateCart(cartItems.filter(item => item.id !== id));
+    const removeItem = (_id: string) => {
+        removeCartItemFromLocalStorage(_id);
     };
 
-    const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    const totalPrice = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
     const shippingCost = cartItems.length > 0 ? 5 : 0;
     const finalTotal = totalPrice + shippingCost;
 
@@ -47,36 +34,36 @@ const Cart = () => {
                         <>
                             <div className="space-y-4">
                                 {cartItems.map((item) => (
-                                    <div key={item.id} className="flex flex-col border p-4 rounded-md">
+                                    <div key={item.product._id} className="flex flex-col border p-4 rounded-md">
                                         <div className="flex items-center">
                                             <img
-                                                src={item.image[0]}
-                                                alt={item.name}
+                                                src={`${BACKEND_URL}${item.product.imageUrl[0]}`}
+                                                alt={item.product.name}
                                                 className="w-20 h-20 object-contain rounded-md mr-4"
                                             />
                                             <div className="flex-grow">
-                                                <h3 className="text-lg font-semibold">{item.name}</h3>
+                                                <h3 className="text-lg font-semibold">{item.product.name}</h3>
                                                 <p className="text-gray-600">
                                                     Quantity:
                                                     <button
-                                                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                        onClick={() => updateQuantity(item.product._id, item.quantity - 1)}
                                                         className="ml-2 text-gray-800 px-2 py-1 border border-gray-300 rounded"
                                                     >
                                                         -
                                                     </button>
                                                     {item.quantity}
                                                     <button
-                                                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                        onClick={() => updateQuantity(item.product._id, item.quantity + 1)}
                                                         className="ml-2 text-gray-800 px-2 py-1 border border-gray-300 rounded"
                                                     >
                                                         +
                                                     </button>
                                                 </p>
                                             </div>
-                                            <span className="font-semibold">{item.price.toFixed(2)} €</span>
+                                            <span className="font-semibold">{item.product.price.toFixed(2)} €</span>
                                         </div>
                                         <button
-                                            onClick={() => removeItem(item.id)}
+                                            onClick={() => removeItem(item.product._id)}
                                             className="mt-2 text-sm text-blue-600 hover:underline self-start"
                                         >
                                             Remove item

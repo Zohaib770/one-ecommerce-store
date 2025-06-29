@@ -1,4 +1,3 @@
-import React from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import DashboardStats from '../../components/admin/DashboardStats';
 import ProductManagement from '../../components/admin/ProductManagement';
