@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-const ImageGallery: React.FC<{ images: string[] }> = ({ images }) => { // Corrected type here
+const ImageGallery: React.FC<{ images: string[] }> = ({ images }) => {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [thumbnailStartIndex, setThumbnailStartIndex] = useState(0);
   const thumbnailsPerPage = 2;
@@ -19,7 +20,7 @@ const ImageGallery: React.FC<{ images: string[] }> = ({ images }) => { // Correc
   return (
     <div className="flex flex-col items-center">
       <img
-        src={images[currentImageIndex]}
+        src={`${BACKEND_URL}${images[currentImageIndex]}`}
         alt="Thumbnailpicture"
         className="w-[500px] h-[600px] object-contain mt-6"
       />
@@ -40,13 +41,12 @@ const ImageGallery: React.FC<{ images: string[] }> = ({ images }) => { // Correc
             .map((image, index) => (
               <img
                 key={index}
-                src={image}
+                src={`${BACKEND_URL}${image}`}
                 alt={`Vorschaubild ${index + thumbnailStartIndex + 1}`}
-                className={`w-[120px] h-[120px] object-contain m-6 border border-gray-300 rounded-md cursor-pointer ${
-                  currentImageIndex === thumbnailStartIndex + index
-                    ? "opacity-60"
-                    : "opacity-100"
-                }`}
+                className={`w-[120px] h-[120px] object-contain m-6 border border-gray-300 rounded-md cursor-pointer ${currentImageIndex === thumbnailStartIndex + index
+                  ? "opacity-60"
+                  : "opacity-100"
+                  }`}
                 onMouseEnter={() =>
                   setCurrentImageIndex(thumbnailStartIndex + index)
                 }
