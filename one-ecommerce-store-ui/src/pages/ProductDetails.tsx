@@ -1,22 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import products from "./ProductList.tsx";
-import Header from '../pages/layout/Header.tsx';
-import Footer from '../pages/layout/Footer.tsx';
-import ImageGallery from './ImageGallery';
-import textContent from '../locales/en'
-import {Product, StoredCartItem} from '../types/Interface.tsx'
-import {getStoredCartItems, getCartItems} from "./CartUtils.tsx"
+import Header from './layout/Header.tsx';
+import Footer from './layout/Footer.tsx';
+import ImageGallery from '../components/ImageGallery.tsx';
+import textContent from '../locales/en.tsx'
+import { Product } from '../types/Interface.tsx'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAdmin } from '../context/AdminContext.tsx';
+import { useCart } from '../context/CartContext.tsx';
 
 const ProductDetails = () => {
-
-    const [storedCartItems, setStoredCartItems] = useState<StoredCartItem[]>(getStoredCartItems());
+    const { cartItems, saveCartItemToLocalStorage } = useCart();
+    const { products } = useAdmin();
     const { id } = useParams();
-    const product = products.find((item) => item.id === parseInt(id as string))!;
+    // Non-null assertion (!) — sagt TypeScript, dass product garantiert da ist
+    const product = products.find((item) => item._id === id)!;
+
     const [quantity, setQuantity] = useState(1);
-    
+
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(event.target.value, 10);
         setQuantity(isNaN(value) ? 1 : value);
@@ -25,38 +27,31 @@ const ProductDetails = () => {
         setQuantity(quantity + 1);
     };
     const decreaseQuantity = () => {
-        if (quantity > 1) {  
+        if (quantity > 1) {
             setQuantity(quantity - 1);
         }
     };
+
+    // Kein Fallback mehr nötig
     const totalPrice = quantity * product.price;
 
     const addToCart = (item: Product) => {
-        const cart = [...storedCartItems];
-        const existingItemIndex = cart.findIndex((cartItem) => cartItem.id === item.id);
-        
-        if (existingItemIndex !== -1) {
-          cart[existingItemIndex].quantity += quantity;
-        } else {
-          cart.push({ id: item.id, quantity: quantity });
+        const CartItem = {
+            product: item,
+            quantity: quantity,
         }
-    
-        setStoredCartItems(cart);
-        toast.success(`${item.name} added to cart!` , {position: "top-center"});
-      };
-
-    useEffect(() => {
-        localStorage.setItem("cart", JSON.stringify(storedCartItems));
-      }, [storedCartItems]);
+        saveCartItemToLocalStorage(CartItem);
+        toast.success(`${item.name} added to cart!`, { position: "top-center" });
+    };
 
     return (
         <>
-            <Header cartItems={getCartItems(storedCartItems)} />
+            <Header cartItems={cartItems} />
             <ToastContainer autoClose={300} />
 
             <div className="bg-gray-100 flex flex-col md:flex-row p-4">
                 <div className="md:w-1/2 mb-4 md:mb-0">
-                    <ImageGallery images={product.image} />
+                    <ImageGallery images={product.imageUrl} />
                 </div>
 
                 <div className="md:w-1/2 p-10 mt-15">

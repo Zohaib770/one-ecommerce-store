@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import Main from './components/Main.tsx'
-import Shop from './components/Shop.tsx'
-import ProductDetails from './components/ProductDetails.tsx'
+import Main from './pages/Main.tsx'
+import Shop from './pages/Shop.tsx'
+import ProductDetails from './pages/ProductDetails.tsx'
 import Cart from './components/Cart.tsx'
 import Checkout from './components/Checkout.tsx'
 import Payment from './components/Payment.tsx'
