@@ -2,7 +2,6 @@ import AdminLayout from '../../components/admin/AdminLayout';
 import DashboardStats from '../../components/admin/DashboardStats';
 import ProductManagement from '../../components/admin/ProductManagement';
 import OrderManagement from '../../components/admin/OrderManagement';
-import UserManagement from '../../components/admin/UserManagement';
 import SalesChart from '../../components/admin/SalesChart';
 import RecentActivity from '../../components/admin/RecentActivity';
 import { useAdmin } from '../../context/AdminContext';
@@ -16,8 +15,6 @@ const Admin = () => {
         return <ProductManagement />;
       case 'orders':
         return <OrderManagement />;
-      case 'users':
-        return <UserManagement />;
       default:
         return (
           <>
