@@ -133,7 +133,7 @@ const Checkout = () => {
                             {paymentMethod === 'paypal' ? 'Pay with PayPal' : 'Complete Checkout'}
                         </button>
 
-                        {/* <Link to="/payment">Payments</Link> */}
+                        <Link to="/payment">Payments</Link>
 
                     </form>
                 </div>
