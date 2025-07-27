@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAdmin } from '../../context/AdminContext';
-import { FiMenu, FiX, FiHome, FiBox, FiShoppingCart, FiUsers, FiLogOut } from 'react-icons/fi';
+import { FiMenu, FiX, FiHome, FiBox, FiShoppingCart, FiLogOut } from 'react-icons/fi';
 import { useAuth } from "../../context/AuthContext";
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -12,7 +12,6 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     { id: 'dashboard', label: 'Dashboard', icon: <FiHome /> },
     { id: 'orders', label: 'Orders', icon: <FiShoppingCart /> },
     { id: 'products', label: 'Products', icon: <FiBox /> },
-    { id: 'users', label: 'Users', icon: <FiUsers /> },
   ];
 
   const currentTabLabel = menuItems.find(item => item.id === activeTab)?.label || 'Admin';
