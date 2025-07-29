@@ -23,6 +23,6 @@ router.put('/delete-product-images/:id', productController.deleteProductImages);
 
 // orders
 router.post('/create-order', orderController.createOrder);
-
+router.get('/fetch-all-orders', orderController.getAllOrders);
 
 module.exports = router;

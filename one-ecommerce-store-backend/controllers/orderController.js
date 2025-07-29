@@ -1,11 +1,17 @@
 const Order = require('../models/Order.js');
 
 const createOrder = async (req, res) => {
-  const { newOrder } = req.body;
-  const orderSaved = await Order.create(newOrder);
+  const { order } = req.body;
+  const orderSaved = await Order.create(order);
   res.json(orderSaved);
 };
 
+const getAllOrders = async (req, res) => {
+  const orders = await Order.find();
+  res.json(orders);
+};
+
 module.exports = {
-  createOrder
+  createOrder,
+  getAllOrders
 }
