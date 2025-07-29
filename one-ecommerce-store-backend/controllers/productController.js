@@ -1,6 +1,23 @@
 const Product = require('../models/Product.js');
 const { saveImages, deleteImages } = require('../utils/imageHandler.js')
 
+const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Produkt nicht gefunden' });
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error('Fehler beim Abrufen des Produkts:', error);
+    res.status(500).json({ message: 'Serverfehler beim Abrufen des Produkts' });
+  }
+};
+
+
 const getAllProducts = async (req, res) => {
   const products = await Product.find();
   res.json(products);
@@ -57,7 +74,6 @@ const updateProduct = async (req, res) => {
   }
 };
 
-
 const deleteProduct = async (req, res) => {
   console.log("===== deleteProduct ENTER");
 
@@ -111,6 +127,7 @@ const deleteProductImages = async (req, res) => {
 };
 
 module.exports = {
+  getProductById,
   getAllProducts,
   addProduct,
   updateProduct,

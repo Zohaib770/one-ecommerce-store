@@ -15,6 +15,7 @@ router.post('/register', userController.userRegister);
 router.post('/login', userController.userLogin);
 
 // products
+router.get('/fetch-product-by-id/:id', productController.getProductById);
 router.get('/fetch-all-products', productController.getAllProducts);
 router.post('/add-product', uploadImagesMiddleware, productController.addProduct);
 router.put('/update-product/:id', uploadImagesMiddleware, productController.updateProduct);
