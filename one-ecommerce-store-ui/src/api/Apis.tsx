@@ -75,7 +75,7 @@ const Apis = () => {
     const fetchAllProducts = async () => {
         try {
             const response = await axiosPublic.get('/fetch-all-products');
-            return response;
+            return response.data as Product[] ;
         } catch (error) {
             console.error('***** fetch-all-product error: ', error);
         }
