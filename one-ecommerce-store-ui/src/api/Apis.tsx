@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import { axiosPublic, axiosPrivate } from './AxiosInstance';
+import { Product } from '../types/Interface';
 
 const Apis = () => {
     const { login } = useAuth();
@@ -61,6 +62,16 @@ const Apis = () => {
         }
     }
 
+    const findProductById = async (id: string) => {
+        try {
+            const response = await axiosPublic.get(`/fetch-product-by-id/${id}`);
+            return response.data as Product;
+        } catch (error) {
+            console.error('***** findProductById error: ', error);
+            throw error;
+        }
+    }
+
     const fetchAllProducts = async () => {
         try {
             const response = await axiosPublic.get('/fetch-all-products');
@@ -96,6 +107,7 @@ const Apis = () => {
         deleteProduct,
         deleteProductImages,
         fetchAllProducts,
+        findProductById,
 
         createOrder,
         fetchAllOrders
