@@ -1,25 +1,49 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './layout/Header';
 import Footer from './layout/Footer';
-import { Link } from 'react-router-dom';
+import Payment from '../components/Payment.tsx';
 import { useCart } from '../context/CartContext.tsx';
 import textContent from '../locales/en';
+import Apis from '../api/Apis'
 
 const Checkout = () => {
-
     const { cartItems } = useCart();
+    const { createOrder } = Apis();
+
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [paymentMethod, setPaymentMethod] = useState<'paypal' | 'card'>('paypal');
+    //const [paymentMethod, setPaymentMethod] = useState<'paypal' | 'card'>('paypal');
 
     const onSubmit = async (data: any) => {
         try {
-            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/shipping-address`, data);
-            toast.success('Checkout erfolgreich!', { position: "top-center", autoClose: 2000 });
+            const order = {
+                cartItems: cartItems.map(item => ({
+                    product: item.product._id,
+                    quantity: item.quantity
+                })),
+                personalDetail: {
+                    fullName: data.fullName,
+                    email: data.email,
+                    phone: data.phone
+                },
+                shippingAddress: {
+                    streetAndHouseNumber: data.streetAndHouseNumber,
+                    zip: data.zip,
+                    city: data.city,
+                    comment: data.comment || ''
+                },
+                payment: {
+                    method: '',
+                    status: '',
+                    transactionId: '',
+                    date: ''
+                },
+                price: cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0),
+                status: 'new'
+            };
 
+            await createOrder(order);
         } catch (error) {
             toast.error('Fehler beim Checkout!', { position: "top-center" });
         }
@@ -30,111 +54,103 @@ const Checkout = () => {
             <Header cartItems={cartItems} />
             <ToastContainer autoClose={300} />
             <section className="py-16 pt-20">
-                <div className="max-w-3xl mx-auto px-4">
-                    <h2 className="text-3xl font-semibold text-center text-gray-900 mb-8">{textContent.checkout_title}</h2>
+                <div className="max-w-4xl mx-auto px-4">
+                    <h2 className="text-3xl font-semibold text-center text-gray-900 mb-10">
+                        {textContent.checkout_title}
+                    </h2>
 
-                    {/* Checkout-Formular */}
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+
+                        {/* Persönliche Angaben */}
+                        <div>
+                            <h3 className="text-xl font-semibold mb-4">👤 Persönliche Angaben</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <input
+                                        {...register("fullName", { required: "Vollständiger Name ist erforderlich" })}
+                                        placeholder="Vollständiger Name"
+                                        className="w-full p-2 border rounded-md"
+                                    />
+                                    {errors.fullName && <p className="text-red-500 text-sm">{String(errors.fullName.message)}</p>}
+                                </div>
+
+                                <div>
+                                    <input
+                                        {...register("email", {
+                                            required: "E-Mail ist erforderlich",
+                                            pattern: {
+                                                value: /^\S+@\S+$/i,
+                                                message: "Ungültige E-Mail-Adresse"
+                                            }
+                                        })}
+                                        placeholder="E-Mail-Adresse"
+                                        className="w-full p-2 border rounded-md"
+                                    />
+                                    {errors.email && <p className="text-red-500 text-sm">{String(errors.email.message)}</p>}
+                                </div>
+
+                                <div>
+                                    <input
+                                        {...register("phone", { required: "Telefonnummer ist erforderlich" })}
+                                        placeholder="Telefonnummer"
+                                        className="w-full p-2 border rounded-md"
+                                    />
+                                    {errors.phone && <p className="text-red-500 text-sm">{String(errors.phone.message)}</p>}
+                                </div>
+                            </div>
+                        </div>
 
                         {/* Versandadresse */}
-                        <div className="mb-8">
-                            <h3 className="text-xl font-semibold mb-4">{textContent.checkout_shipping_address}</h3>
-                            <div className="space-y-4">
-                                <input
-                                    {...register("name", { required: "Name ist erforderlich" })}
-                                    placeholder={textContent.checkout_name_placeholder}
-                                    className="w-full p-2 border rounded-md"
-                                />
-                                {errors.name && <p className="text-red-500">{String(errors.name.message)}</p>}
+                        <div>
+                            <h3 className="text-xl font-semibold mb-4">📦 {textContent.checkout_shipping_address}</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <input
+                                        {...register("streetAndHouseNumber", { required: "Straße & Hausnummer ist erforderlich" })}
+                                        placeholder="Straße und Hausnummer"
+                                        className="w-full p-2 border rounded-md"
+                                    />
+                                    {errors.streetAndHouseNumber && <p className="text-red-500 text-sm">{String(errors.streetAndHouseNumber.message)}</p>}
+                                </div>
 
-                                <input
-                                    {...register("address", { required: "Adresse ist erforderlich" })}
-                                    placeholder={textContent.checkout_address_placeholder}
-                                    className="w-full p-2 border rounded-md"
-                                />
-                                {errors.address && <p className="text-red-500">{String(errors.address.message)}</p>}
+                                <div>
+                                    <input
+                                        {...register("zip", { required: "PLZ ist erforderlich" })}
+                                        placeholder="Postleitzahl"
+                                        className="w-full p-2 border rounded-md"
+                                    />
+                                    {errors.zip && <p className="text-red-500 text-sm">{String(errors.zip.message)}</p>}
+                                </div>
 
-                                <input
-                                    {...register("city", { required: "Stadt ist erforderlich" })}
-                                    placeholder={textContent.checkout_city_placeholder}
-                                    className="w-full p-2 border rounded-md"
-                                />
-                                {errors.city && <p className="text-red-500">{String(errors.city.message)}</p>}
+                                <div>
+                                    <input
+                                        {...register("city", { required: "Stadt ist erforderlich" })}
+                                        placeholder="Stadt"
+                                        className="w-full p-2 border rounded-md"
+                                    />
+                                    {errors.city && <p className="text-red-500 text-sm">{String(errors.city.message)}</p>}
+                                </div>
 
-                                <input
-                                    {...register("zip", { required: "PLZ ist erforderlich" })}
-                                    placeholder={textContent.checkout_zip_placeholder}
-                                    className="w-full p-2 border rounded-md"
-                                />
-                                {errors.zip && <p className="text-red-500">{String(errors.zip.message)}</p>}
-
+                                <div className="md:col-span-2">
+                                    <textarea
+                                        {...register("comment")}
+                                        placeholder="Kommentar zur Lieferung (optional)"
+                                        className="w-full p-2 border rounded-md"
+                                        rows={3}
+                                    />
+                                </div>
                             </div>
                         </div>
 
-                        {/* Zahlungsmethode */}
-                        <div className="mb-8">
-                            <h3 className="text-xl font-semibold mb-4">{textContent.checkout_payment_method}</h3>
-                            <div className="flex border-b mb-4">
-                                <button
-                                    type="button"
-                                    className={`flex-1 py-2 text-center ${paymentMethod === 'paypal' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600'}`}
-                                    onClick={() => setPaymentMethod('paypal')}
-                                >
-                                    {textContent.checkout_paypal}
-                                </button>
-                                <button
-                                    type="button"
-                                    className={`flex-1 py-2 text-center ${paymentMethod === 'card' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600'}`}
-                                    onClick={() => setPaymentMethod('card')}
-                                >
-                                    {textContent.checkout_card}
-                                </button>
-                            </div>
+                        {/* Zahlungsoptionen */}
+                        <Payment />
 
-                            {/* PayPal Info */}
-                            {paymentMethod === 'paypal' && (
-                                <div className="text-center p-4 border rounded-md bg-gray-100">
-                                    <p className="text-gray-700">{textContent.checkout_paypal_info}</p>
-                                </div>
-                            )}
-
-                            {/* Kreditkartenfelder */}
-                            {paymentMethod === 'card' && (
-                                <div className="space-y-4">
-                                    <input
-                                        {...register("cardNumber", { required: "Kartennummer ist erforderlich" })}
-                                        placeholder={textContent.checkout_card_number_placeholder}
-                                        className="w-full p-2 border rounded-md"
-                                    />
-                                    {errors.cardNumber && <p className="text-red-500">{String(errors.cardNumber.message)}</p>}
-
-                                    <input
-                                        {...register("expiry", { required: "Ablaufdatum ist erforderlich" })}
-                                        placeholder={textContent.checkout_expiry_placeholder}
-                                        className="w-full p-2 border rounded-md"
-                                    />
-                                    {errors.expiry && <p className="text-red-500">{String(errors.expiry.message)}</p>}
-
-                                    <input
-                                        {...register("cvv", { required: "CVV ist erforderlich" })}
-                                        placeholder={textContent.checkout_cvv_placeholder}
-                                        className="w-full p-2 border rounded-md"
-                                    />
-                                    {errors.cvv && <p className="text-red-500">{String(errors.cvv.message)}</p>}
-                                </div>
-                            )}
+                        {/* Absenden */}
+                        <div className="text-center">
+                            <button type="submit" className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+                                Bestellung abschicken
+                            </button>
                         </div>
-
-                        {/* Absenden-Button */}
-                        <button
-                            type="submit"
-                            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
-                        >
-                            {paymentMethod === 'paypal' ? 'Pay with PayPal' : 'Complete Checkout'}
-                        </button>
-
-                        <Link to="/payment">Payments</Link>
-
                     </form>
                 </div>
             </section>
