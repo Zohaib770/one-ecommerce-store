@@ -1,7 +1,6 @@
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import { axiosPublic, axiosPrivate } from './AxiosInstance';
-import { Product } from '../types/Interface'
 
 const Apis = () => {
     const { login } = useAuth();
@@ -71,6 +70,25 @@ const Apis = () => {
         }
     }
 
+    const createOrder = async (order: any) => {
+        try {
+            await axiosPublic.post('/create-order', { order });
+            toast.success('createOrder erfolgreich!');
+        } catch (error) {
+            console.error('***** createOrder error: ', error);
+            toast.error('Fehler beim createOrder!');
+        }
+    }
+
+    const fetchAllOrders = async () => {
+        try {
+            const response = await axiosPrivate.get('/fetch-all-orders');
+            return response;
+        } catch (error) {
+            console.error('***** fetch-all-order error: ', error);
+        }
+    }
+
     return {
         userLogin,
         addProduct,
@@ -78,6 +96,9 @@ const Apis = () => {
         deleteProduct,
         deleteProductImages,
         fetchAllProducts,
+
+        createOrder,
+        fetchAllOrders
     };
 };
 
