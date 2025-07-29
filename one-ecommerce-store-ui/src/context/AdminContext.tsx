@@ -44,8 +44,30 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const getAllOrders = async () => {
         const response = await fetchAllOrders();
+        const produtsData = await fetchAllProducts();
+        if (produtsData) {
+            setProducts(produtsData.data);
+        }
+
         if (response) {
-            setOrders(response.data);
+            const ordersWithProductDetails = response.data.map((order: Order) => {
+                const enrichedCartItems = order.cartItems.map(cartItem => {
+                    const fullProduct = products.find(p => {
+                        return p._id === cartItem.product.toString();
+                    });
+
+                    return {
+                        ...cartItem,
+                        product: fullProduct
+                    };
+                });
+
+                return {
+                    ...order,
+                    cartItems: enrichedCartItems
+                };
+            });
+            setOrders(ordersWithProductDetails);
         }
     };
 
