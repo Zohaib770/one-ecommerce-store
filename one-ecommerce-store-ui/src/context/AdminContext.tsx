@@ -25,7 +25,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const [products, setProducts] = useState<Product[]>([]);
     const [orders, setOrders] = useState<Order[]>([]);
 
-    const { fetchAllProducts } = Apis();
+    const { fetchAllProducts, fetchAllOrders } = Apis();
     const stats = {
         totalSales: orders.reduce((sum, order) => sum + order.price, 0),
         monthlySales: orders
@@ -42,8 +42,16 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
+    const getAllOrders = async () => {
+        const response = await fetchAllOrders();
+        if (response) {
+            setOrders(response.data);
+        }
+    };
+
     useEffect(() => {
         getAllProducts();
+        getAllOrders();
     }, []);
 
     return (
@@ -54,7 +62,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             orders,
             stats,
             fetchProducts: getAllProducts,
-            fetchOrders: async () => { },
+            fetchOrders: getAllOrders,
             //updateOrderStatus: async () => { },
         }}>
             {children}
