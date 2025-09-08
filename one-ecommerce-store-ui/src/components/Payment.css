@@ -1,0 +1,129 @@
+/* Page layout: top-center */
+.page-top-center {
+  min-height: 100vh;          /* full height so top spacing is consistent */
+  display: flex;
+  justify-content: center;     /* center horizontally */
+  align-items: flex-start;     /* stick to the top */
+  padding-top: 16px;           /* a bit of top space like your screenshot */
+  background: #fafafa;
+}
+
+/* Container card */
+.pay-card {
+  width: 520px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 14px 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+/* Header */
+.pay-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 10px 6px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 10px;
+}
+
+.pay-header-icon {
+  font-size: 20px;
+  color: #2563eb;
+}
+
+.pay-header-text {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+/* Options list */
+.pay-options {
+  display: grid;
+  gap: 10px;
+}
+
+.pay-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  transition: box-shadow 120ms ease, border 120ms ease, background 120ms ease;
+}
+
+.pay-option:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.pay-option.selected {
+  border: 1px solid #2563eb;
+  background: #f5f9ff;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.10);
+}
+
+.pay-option-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.pay-option-icon {
+  font-size: 22px;
+  width: 24px;
+  text-align: center;
+}
+
+.pay-option-info {
+  display: grid;
+}
+
+.pay-option-name {
+  font-weight: 600;
+}
+
+.pay-option-sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+/* Confirm button */
+.pay-confirm {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 120ms ease, opacity 120ms ease;
+}
+
+.pay-confirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pay-confirm:not(:disabled):hover {
+  background: #1d4ed8;
+}
+
+.card-form {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0 40px; /* indent under card option */
+}
+
+.card-form input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
