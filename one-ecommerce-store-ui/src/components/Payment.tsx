@@ -10,22 +10,27 @@ import {
 import { CardElement, ElementsConsumer } from "@stripe/react-stripe-js";
 import "./Payment.css";
 
+// 1) INTERFACES (TypeScript types for objects)
+// "interface" describes the shape of an object so TS can type-check.
 interface Option {
-  id: string;
-  name: string;
-  providers: string[];
-  icon: React.ReactNode;
+  id: string;             // unique id for the option
+  name: string;           // display name
+  providers: string[];    // extra text
+  icon: React.ReactNode;  // any renderable React content (icons, divs, etc.)
 }
 
 interface State {
-  selected: string;
-  options: Option[];
-  processing: boolean;
-  error: string | null;
-  succeeded: boolean;
+  selected: string;       // which option is chosen
+  options: Option[];      // all available options
+  processing: boolean;    // are we paying right now?
+  error: string | null;   // last error message (if any)
+  succeeded: boolean;     // did the payment succeed?
 }
 
+// 2) CLASS COMPONENT
+// Extends React.Component<Props, State>. We don't need custom props now -> unknown.
 class Payment extends React.Component<unknown, State> {
+  // 3) INITIAL STATE (a class property using assignment)
   public state: State = {
     selected: "",
     processing: false,
@@ -43,40 +48,21 @@ class Payment extends React.Component<unknown, State> {
           </div>
         ),
       },
-      {
-        id: "paypal",
-        name: "PayPal",
-        providers: ["PayPal"],
-        icon: <FaPaypal style={{ color: "#003087", fontSize: "24px" }} />,
-      },
-      {
-        id: "googlepay",
-        name: "Google Pay",
-        providers: ["Google Pay"],
-        icon: <FaGooglePay style={{ color: "#4285f4", fontSize: "24px" }} />,
-      },
-      {
-        id: "applepay",
-        name: "Apple Pay",
-        providers: ["Apple Pay"],
-        icon: <FaApple style={{ color: "#000000", fontSize: "24px" }} />,
-      },
-      {
-        id: "bank",
-        name: "Bank Transfer",
-        providers: ["Wise", "SEPA", "ACH"],
-        icon: <FaUniversity style={{ color: "#2e7d32", fontSize: "24px" }} />,
-      },
+      { id: "paypal", name: "PayPal", providers: ["PayPal"], icon: <FaPaypal style={{ color: "#003087", fontSize: 24 }} /> },
+      { id: "googlepay", name: "Google Pay", providers: ["Google Pay"], icon: <FaGooglePay style={{ color: "#4285f4", fontSize: 24 }} /> },
+      { id: "applepay", name: "Apple Pay", providers: ["Apple Pay"], icon: <FaApple style={{ color: "#000", fontSize: 24 }} /> },
+      { id: "bank", name: "Bank Transfer", providers: ["Wise", "SEPA", "ACH"], icon: <FaUniversity style={{ color: "#2e7d32", fontSize: 24 }} /> },
     ],
   };
 
+  // 4) RENDER METHOD (required by class components)
   public render() {
     return (
       <div className="page-top-center">
         <div className="pay-card">
           {this.renderHeader()}
 
-          {/* We use ElementsConsumer so a class component can access stripe/elements */}
+          {/* ElementsConsumer gives stripe/elements to a CLASS component */}
           <ElementsConsumer>
             {({ stripe, elements }) => (
               <>
@@ -92,6 +78,7 @@ class Payment extends React.Component<unknown, State> {
     );
   }
 
+  // 5) SMALL RENDER HELPERS (just to keep render() clean)
   private renderHeader() {
     return (
       <div className="pay-header">
@@ -100,7 +87,6 @@ class Payment extends React.Component<unknown, State> {
     );
   }
 
-  /** The options list; only "card" shows a secure CardElement below it */
   private renderOptionsWithStripe(stripe: any, elements: any) {
     const { options, selected } = this.state;
 
@@ -110,15 +96,13 @@ class Payment extends React.Component<unknown, State> {
           <div key={opt.id}>
             <label
               className={`pay-option ${selected === opt.id ? "selected" : ""}`}
-              onClick={() => this.handleSelect(opt.id)}
+              onClick={() => this.handleSelect(opt.id)} // onClick calls a METHOD
             >
               <div className="pay-option-left">
                 <span className="pay-option-icon">{opt.icon}</span>
                 <div className="pay-option-info">
                   <div className="pay-option-name">{opt.name}</div>
-                  <div className="pay-option-sub">
-                    {opt.providers.join(", ")}
-                  </div>
+                  <div className="pay-option-sub">{opt.providers.join(", ")}</div>
                 </div>
               </div>
               <input
@@ -130,7 +114,7 @@ class Payment extends React.Component<unknown, State> {
               />
             </label>
 
-            {/* Secure Stripe card form only for the first option */}
+            {/* show Stripe card field ONLY for the first option */}
             {selected === "card" && opt.id === "card" && this.renderCardForm()}
           </div>
         ))}
@@ -138,7 +122,6 @@ class Payment extends React.Component<unknown, State> {
     );
   }
 
-  /** Stripe secure card input (replaces manual number/expiry/cvv inputs) */
   private renderCardForm() {
     return (
       <div className="card-form">
@@ -154,91 +137,87 @@ class Payment extends React.Component<unknown, State> {
     );
   }
 
-  /** Confirm button wired to Stripe or plain flow depending on selected method */
   private renderConfirmWithStripe(stripe: any, elements: any) {
     const { selected, processing } = this.state;
 
     return (
       <button
         className="pay-confirm"
-        disabled={!selected || processing}
-        onClick={() => this.handleConfirmStripe(stripe, elements)}
+        disabled={!selected || !stripe || !elements || processing}
+        onClick={() => this.handleConfirmStripe(stripe, elements)} // arrow method
+        title={!stripe || !elements ? "Loading Stripe…" : ""}
       >
         {processing ? "Processing…" : "Confirm & Pay"}
       </button>
     );
   }
 
-  /** Status / errors */
   private renderStatus() {
     const { error, succeeded } = this.state;
     return (
       <>
         {error && <p style={{ color: "red", marginTop: 8 }}>{error}</p>}
-        {succeeded && (
-          <p style={{ color: "green", marginTop: 8 }}>✅ Payment succeeded!</p>
-        )}
+        {succeeded && <p style={{ color: "green", marginTop: 8 }}>✅ Payment succeeded!</p>}
       </>
     );
   }
 
-  // --- Handlers ---
-
+  // 6) METHODS (arrow functions keep "this" bound to the class instance)
+  // Why ARROW here? In class components, normal methods lose "this" when passed
+  // as callbacks. Arrow methods capture "this" lexically, avoiding manual binding.
   private handleSelect = (id: string) => {
+    // setState schedules a state update (async), then React re-renders.
     this.setState({ selected: id, error: null });
   };
 
-  /** Creates PaymentIntent on your backend and confirms it with Stripe Elements */
+  // ASYNC because we await fetch() and stripe.confirmCardPayment()
   private handleConfirmStripe = async (stripe: any, elements: any) => {
     const { selected } = this.state;
 
-    // Non-card methods: just proceed (you can replace with your own flows)
+    // guard: if not card, just demo an alternate flow
     if (selected !== "card") {
       alert(`You selected "${selected}". Proceeding to checkout...`);
       return;
     }
-
     if (!stripe || !elements) {
-      this.setState({ error: "Stripe has not loaded yet." });
+      this.setState({ error: "Stripe is still loading." });
       return;
     }
 
     this.setState({ processing: true, error: null, succeeded: false });
 
     try {
-      // 1) Ask your backend for a PaymentIntent client secret
-      const res = await fetch("http://localhost:3000/create-payment-intent", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        // Optional: include cart/order info so server computes amount securely
-        body: JSON.stringify({ items: [{ id: "order-123", qty: 1 }] }),
+      // Call our backend. Because of Vite proxy, /api goes to http://localhost:3000
+      const res = await fetch("/api/create-payment-intent", {
+        method: "POST",                                // HTTP method
+        headers: { "Content-Type": "application/json" }, // we send JSON
+        body: JSON.stringify({ items: [{ id: "order-123", qty: 1 }] }), // example data
       });
-      const { clientSecret } = await res.json();
 
-      if (!clientSecret) {
-        throw new Error("No clientSecret returned from server.");
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(`API ${res.status} ${res.statusText}: ${text}`);
       }
 
-      // 2) Confirm the payment with the card details in CardElement
+      // Parse JSON body; { clientSecret: string }
+      const { clientSecret } = await res.json();
+      if (!clientSecret) throw new Error("No clientSecret from server.");
+
+      // Get the secure card field instance from Elements
       const card = elements.getElement(CardElement);
-      const { error, paymentIntent } = await stripe.confirmCardPayment(
-        clientSecret,
-        {
-          payment_method: { card },
-        }
-      );
+
+      // Ask Stripe to confirm the payment (handles 3DS/SCA automatically)
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: { card },
+      });
 
       if (error) {
-        this.setState({
-          error: error.message || "Payment failed",
-          processing: false,
-        });
+        this.setState({ error: error.message || "Payment failed", processing: false });
         return;
       }
 
       if (paymentIntent?.status === "succeeded") {
-        this.setState({ succeeded: true, processing: false, error: null });
-        // TODO: call your backend or rely on webhooks to mark the order paid
+        this.setState({ succeeded: true, processing: false });
       } else {
         this.setState({
           error: `Payment status: ${paymentIntent?.status ?? "unknown"}`,
@@ -246,7 +225,8 @@ class Payment extends React.Component<unknown, State> {
         });
       }
     } catch (e: any) {
-      this.setState({ error: e?.message ?? "Unexpected error", processing: false });
+      // Any thrown error lands here (network, bad response, etc.)
+      this.setState({ error: e?.message ?? "Network error", processing: false });
     }
   };
 }
